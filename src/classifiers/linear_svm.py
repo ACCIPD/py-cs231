@@ -36,9 +36,11 @@ def svm_loss_vectorized(W, X, y, reg):
     num_train = X.shape[0]
 
     scores = X.dot(W)
-    correct_class_score = 
-    margins = np.zeros(scores.shape)
-    margins = np.maximum(0, scores - 
+    correct_class_score = scores[np.arange(num_train), y)
+    margin = scores - correct_class_score + 1
+    loss_per_train = np.sum(margin * (margin > 0), axis = 1) - 1.0
 
+    loss = np.sum(loss_per_train) / (float)num_train
+    loss += 0.5 * reg * np.sum(W * W)
     return loss, dW
 
